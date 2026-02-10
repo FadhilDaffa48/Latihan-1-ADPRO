@@ -12,6 +12,7 @@ implementation("org.springframework.boot:spring-boot-starter-validation")
 lalu menambahkan decorator seperti @NotBlank @Min dan @Valid pada data yang rentan terkena dampak spam bot serta menambahkan pesan error pada HTMLnya
 Contoh:
 // Illustrasi kode saja
+
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 // import lainnya
@@ -19,9 +20,11 @@ import org.springframework.validation.BindingResult;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
+
     @PostMapping("/create")
     public String createProductPost(@Valid @ModelAttribute Product product, BindingResult bindingResult, Model model) {
         // cek apakah ada error validasi
+        
         if (bindingResult.hasErrors()) {
             return "CreateProduct"; // Tetap di halaman form jika ada error
         }
@@ -37,8 +40,8 @@ public class ProductController {
         return "redirect:list";
     }
 }
-package id.ac.ui.cs.advprog.eshop.model;
 
+package id.ac.ui.cs.advprog.eshop.model;
 import lombok.Data;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -46,6 +49,7 @@ import jakarta.validation.constraints.NotNull;
 
 @Data
 public class Product {
+    
     private String productId;
     @NotBlank(message = "Nama produk tidak boleh kosong!")
     private String productName;
