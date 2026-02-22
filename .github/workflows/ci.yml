@@ -1,6 +1,5 @@
 name: Continuous Integration (CI)
 
-## Run CI jobs on all branches by default
 on:
   push:
   pull_request:
@@ -12,13 +11,49 @@ jobs:
     steps:
       - name: Check out the Git repository
         uses: actions/checkout@v4
+
       - name: Set up Java toolchain
         uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "21"
           cache: "gradle"
+
       - name: Run unit tests
         run: |
           chmod +x ./gradlew
           ./gradlew test
+
+  sonarcloud:
+    name: SonarCloud scan
+    runs-on: ubuntu-22.04
+    needs: test
+    steps:
+      - name: Check out the Git repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java toolchain
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "gradle"
+
+      - name: Build & tests (for coverage)
+        run: |
+          chmod +x ./gradlew
+          ./gradlew test jacocoTestReport || ./gradlew test
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args: >
+            -Dsonar.organization=b-fadhil-daffa-putra-irawan
+            -Dsonar.projectKey=b-fadhil-daffa-putra-irawan-2406438271
+            -Dsonar.sources=.
+            -Dsonar.java.binaries=build/classes
+            -Dsonar.qualitygate.wait=true
