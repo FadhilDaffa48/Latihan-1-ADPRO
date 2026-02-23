@@ -82,6 +82,6 @@ tasks.withType<Test>().configureEach {
 
 // --- Konfigurasi PMD ---
 pmd {
-	consoleOutput = true
+	isConsoleOutput = true
 	toolVersion = "7.0.0"
 }
