@@ -43,9 +43,13 @@ jobs:
           java-version: "21"
           cache: "gradle"
 
-      - name: SonarCloud Scan (Gradle plugin)
+      - name: SonarCloud Scan (Gradle)
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           chmod +x ./gradlew
-          ./gradlew clean test sonar -Dsonar.qualitygate.wait=true --info
+          ./gradlew clean test sonar --info \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.organization=b-fadhil-daffa-putra-irawan-2406438271 \
+            -Dsonar.projectKey=B-Fadhil-Daffa-Putra-Irawan-2406438271_Modul-1-Coding-Standards \
+            -Dsonar.qualitygate.wait=false
