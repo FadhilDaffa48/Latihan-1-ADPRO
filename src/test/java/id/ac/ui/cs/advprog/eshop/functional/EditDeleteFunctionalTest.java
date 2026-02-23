@@ -18,6 +18,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ExtendWith(SeleniumJupiter.class)
 class EditDeleteFunctionalTest {
 
+    // --- Konstanta ditambahkan di sini untuk mengatasi PMD AvoidDuplicateLiterals ---
+    private static final String PRODUCT_LIST_URL = "/product/list";
+
     @LocalServerPort
     private int serverPort;
 
@@ -42,7 +45,7 @@ class EditDeleteFunctionalTest {
     @Test
     void testEditProduct_Success(ChromeDriver driver) {
         createProduct(driver, "Produk Awal", "10");
-        driver.get(baseUrl + "/product/list");
+        driver.get(baseUrl + PRODUCT_LIST_URL); // Menggunakan konstanta
 
         WebElement editButton = driver.findElement(By.xpath("//td[contains(text(), 'Produk Awal')]/..//a[contains(@href, 'edit')]"));
         editButton.click();
@@ -59,7 +62,7 @@ class EditDeleteFunctionalTest {
     @Test
     void testDeleteProduct_Success(ChromeDriver driver) {
         createProduct(driver, "Produk Dihapus", "5");
-        driver.get(baseUrl + "/product/list");
+        driver.get(baseUrl + PRODUCT_LIST_URL); // Menggunakan konstanta
 
         WebElement deleteButton = driver.findElement(By.xpath("//td[contains(text(), 'Produk Dihapus')]/..//a[contains(@href, 'delete')]"));
         deleteButton.click();
@@ -74,7 +77,7 @@ class EditDeleteFunctionalTest {
         driver.get(baseUrl + "/product/edit/id-ngasal-yang-pasti-tidak-ada");
 
         String currentUrl = driver.getCurrentUrl();
-        assertTrue(currentUrl.contains("/product/list"));
+        assertTrue(currentUrl.contains(PRODUCT_LIST_URL)); // Menggunakan konstanta
     }
 
     @Test
@@ -83,6 +86,6 @@ class EditDeleteFunctionalTest {
         driver.get(baseUrl + "/product/delete/id-ngasal-yang-pasti-tidak-ada");
 
         String currentUrl = driver.getCurrentUrl();
-        assertTrue(currentUrl.contains("/product/list"));
+        assertTrue(currentUrl.contains(PRODUCT_LIST_URL)); // Menggunakan konstanta
     }
 }
