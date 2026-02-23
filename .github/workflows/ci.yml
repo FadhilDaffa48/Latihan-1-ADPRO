@@ -2,7 +2,9 @@ name: Continuous Integration (CI)
 
 on:
   push:
+    - "**"
   pull_request:
+    - "**"
 
 jobs:
   test:

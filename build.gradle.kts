@@ -85,6 +85,7 @@ sonar {
 	properties {
 		property("sonar.projectKey", "B-Fadhil-Daffa-Putra-Irawan-2406438271_Modul-1-Coding-Standards")
 		property("sonar.organization", "b-fadhil-daffa-putra-irawan-2406438271")
+		property("sonar.qualitygate.wait", "true")
 	}
 }
 
