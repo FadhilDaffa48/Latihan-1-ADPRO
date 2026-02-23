@@ -48,7 +48,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           chmod +x ./gradlew
-          ./gradlew test sonar --info \
-            -Dsonar.organization=b-fadhil-daffa-putra-irawan-2406438271 \
-            -Dsonar.projectKey=B-Fadhil-Daffa-Putra-Irawan-2406438271_Modul-1-Coding-Standards \
-            -Dsonar.qualitygate.wait=false
+          ./gradlew clean test sonar -Dsonar.qualitygate.wait=true --info
