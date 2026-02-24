@@ -72,3 +72,17 @@ public class Product {
    semakin sulit dibaca karena konfigurasi yang berulang ulang malah dapat berujung mengalihkan fokus.
    Untuk perbaikan sendiri dapat menggunakan inheritance misalnya menggunakan satu base test case dan fokuskan semua konfigurasi ke base tersebut
    kemudian CreateProductFunctionalTest dan duplikatnya dapat extend ke base yang baru tersebut saja
+
+# Module 2
+
+# Reflection
+1. Pada modul kali ini saya awalnya menggunakan SonarQube untuk melakukan code analysis, akan tetapi SonarQube memerlukan saya untuk melakukan mergin ke branch
+Main dimana hal itu tidak sesuai dengan modul sehingga saya berpindah ke PMD, pada PMD setelah saya impelementasikan ke dalam workflow ternyata ada masalah code quality
+pada EditDeleteFunctionalTest dan ProductRepositoryTest, dimana terjadi duplikasi String yang sama berkali kali, saya memperbaikinya dengan menambah satu variabel yang konstan 
+berisi String yang terduplikat berkali-kali dan setelah saya melakukan itu workflow pun akhirnya berhasil terintegrasi.
+
+2. Implementasi workflow yang saya telah buat sudah memenuhi kriteria untuk Continous Integration karena setiap push dan pull request secara otomatis menjalankan unit test serta analisis kode menggunakan PMD, 
+sehingga setiap perubahan kode langsung divalidasi sebelum terintegrasi lebih lanjut dan kualitas tetap terjaga. Untuk Continuous Deployment, sistem sudah melakukan deployment otomatis ke Render 
+setiap ada push ke branch main, sehingga proses rilis berjalan tanpa intervensi manual. Namun, deployment tersebut belum sepenuhnya bergantung pada keberhasilan pipeline CI karena workflow CD 
+tidak memiliki dependensi langsung terhadap job test dan analisis, sehingga secara konsep sudah mengarah ke CD tetapi masih dapat ditingkatkan dengan memastikan deployment hanya terjadi setelah seluruh
+tahapan CI berhasil dan dilindungi oleh branch protection.

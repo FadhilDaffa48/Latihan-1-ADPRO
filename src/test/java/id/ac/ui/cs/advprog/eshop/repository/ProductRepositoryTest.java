@@ -50,6 +50,22 @@ class ProductRepositoryTest {
     }
 
     @Test
+    void testCreateProductIdNull_shouldGenerateUUID() {
+        Product product = new Product();
+        product.setProductName(PRODUCT_BAMBANG);
+        product.setProductQuantity(100);
+
+        Product result = productRepository.create(product);
+
+        assertNotNull(result.getProductId());
+        assertFalse(result.getProductId().isBlank());
+
+        Product found = productRepository.findById(result.getProductId());
+        assertNotNull(found);
+        assertEquals(PRODUCT_BAMBANG, found.getProductName());
+    }
+
+    @Test
     void testFindAllIfMoreThanOneProduct() {
         Product product1 = new Product();
         product1.setProductId(TEST_ID);
