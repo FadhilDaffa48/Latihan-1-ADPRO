@@ -63,7 +63,7 @@ class ProductControllerTest {
 
         mockMvc.perform(get("/product/list"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("productList"))
+                .andExpect(view().name("ProductList")) // FIX: match templates/ProductList.html
                 .andExpect(model().attributeExists("products"))
                 .andExpect(model().attribute("products", products));
 
