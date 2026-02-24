@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ProductRepositoryTest {
 
-    // --- Konstanta ditambahkan di sini untuk mengatasi PMD AvoidDuplicateLiterals ---
     private static final String TEST_ID = "eb558e9f-1c39-460e-8860-71af6af63bd6";
     private static final String PRODUCT_BAMBANG = "Sampo Cap Bambang";
     private static final String PRODUCT_USEP = "Sampo Cap Usep";
@@ -47,6 +46,22 @@ class ProductRepositoryTest {
     void testFindAllIfEmpty() {
         Iterator<Product> productIterator = productRepository.findAll();
         assertFalse(productIterator.hasNext());
+    }
+
+    @Test
+    void testCreateProductIdNull_shouldGenerateUUID() {
+        Product product = new Product();
+        product.setProductName(PRODUCT_BAMBANG);
+        product.setProductQuantity(100);
+
+        Product result = productRepository.create(product);
+
+        assertNotNull(result.getProductId());
+        assertFalse(result.getProductId().isBlank());
+
+        Product found = productRepository.findById(result.getProductId());
+        assertNotNull(found);
+        assertEquals(PRODUCT_BAMBANG, found.getProductName());
     }
 
     @Test
