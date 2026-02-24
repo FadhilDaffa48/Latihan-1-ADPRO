@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class ProductRepositoryTest {
 
-    // --- Konstanta ditambahkan di sini untuk mengatasi PMD AvoidDuplicateLiterals ---
     private static final String TEST_ID = "eb558e9f-1c39-460e-8860-71af6af63bd6";
     private static final String PRODUCT_BAMBANG = "Sampo Cap Bambang";
     private static final String PRODUCT_USEP = "Sampo Cap Usep";
