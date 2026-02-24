@@ -20,6 +20,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ProductController.class)
 class ProductControllerTest {
 
+    private static final String ATTR_PRODUCT = "product";
+    private static final String ATTR_PRODUCTS = "products";
+    private static final String PARAM_ID = "id";
+    private static final String PARAM_NAME = "name";
+    private static final String PARAM_QTY = "quantity";
+
+    private static final String TEST_ID = "P001";
+    private static final String NAME_KEYBOARD = "Keyboard";
+    private static final String NAME_MOUSE = "Mouse";
+    private static final String QTY_10 = "10";
+    private static final String QTY_5 = "5";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -31,8 +43,8 @@ class ProductControllerTest {
         mockMvc.perform(get("/product/create"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("CreateProduct"))
-                .andExpect(model().attributeExists("product"))
-                .andExpect(model().attribute("product", org.hamcrest.Matchers.instanceOf(Product.class)));
+                .andExpect(model().attributeExists(ATTR_PRODUCT))
+                .andExpect(model().attribute(ATTR_PRODUCT, org.hamcrest.Matchers.instanceOf(Product.class)));
 
         verifyNoInteractions(service);
     }
@@ -40,17 +52,17 @@ class ProductControllerTest {
     @Test
     void postCreate_shouldCallServiceCreate_andRedirectToList() throws Exception {
         mockMvc.perform(post("/product/create")
-                        .param("id", "P001")
-                        .param("name", "Keyboard")
-                        .param("quantity", "10"))
+                        .param(PARAM_ID, TEST_ID)
+                        .param(PARAM_NAME, NAME_KEYBOARD)
+                        .param(PARAM_QTY, QTY_10))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:list"));
 
         ArgumentCaptor<Product> captor = ArgumentCaptor.forClass(Product.class);
         verify(service, times(1)).create(captor.capture());
         Product sent = captor.getValue();
-
         assertThat(sent).isNotNull();
+        verifyNoMoreInteractions(service);
     }
 
     @Test
@@ -63,9 +75,9 @@ class ProductControllerTest {
 
         mockMvc.perform(get("/product/list"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("ProductList")) // FIX: match templates/ProductList.html
-                .andExpect(model().attributeExists("products"))
-                .andExpect(model().attribute("products", products));
+                .andExpect(view().name("ProductList"))
+                .andExpect(model().attributeExists(ATTR_PRODUCTS))
+                .andExpect(model().attribute(ATTR_PRODUCTS, products));
 
         verify(service, times(1)).findAll();
         verifyNoMoreInteractions(service);
@@ -86,24 +98,24 @@ class ProductControllerTest {
     @Test
     void getEdit_whenProductFound_shouldReturnEditProductView_andPutProductInModel() throws Exception {
         Product found = new Product();
-        when(service.findById("P001")).thenReturn(found);
+        when(service.findById(TEST_ID)).thenReturn(found);
 
-        mockMvc.perform(get("/product/edit/P001"))
+        mockMvc.perform(get("/product/edit/" + TEST_ID))
                 .andExpect(status().isOk())
                 .andExpect(view().name("EditProduct"))
-                .andExpect(model().attributeExists("product"))
-                .andExpect(model().attribute("product", found));
+                .andExpect(model().attributeExists(ATTR_PRODUCT))
+                .andExpect(model().attribute(ATTR_PRODUCT, found));
 
-        verify(service, times(1)).findById("P001");
+        verify(service, times(1)).findById(TEST_ID);
         verifyNoMoreInteractions(service);
     }
 
     @Test
     void postEdit_shouldCallServiceEdit_andRedirectToList() throws Exception {
         mockMvc.perform(post("/product/edit")
-                        .param("id", "P001")
-                        .param("name", "Mouse")
-                        .param("quantity", "5"))
+                        .param(PARAM_ID, TEST_ID)
+                        .param(PARAM_NAME, NAME_MOUSE)
+                        .param(PARAM_QTY, QTY_5))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:list"));
 
@@ -113,11 +125,11 @@ class ProductControllerTest {
 
     @Test
     void getDelete_shouldCallServiceDelete_andRedirectToList() throws Exception {
-        mockMvc.perform(get("/product/delete/P001"))
+        mockMvc.perform(get("/product/delete/" + TEST_ID))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:../list"));
 
-        verify(service, times(1)).delete("P001");
+        verify(service, times(1)).delete(TEST_ID);
         verifyNoMoreInteractions(service);
     }
 }
